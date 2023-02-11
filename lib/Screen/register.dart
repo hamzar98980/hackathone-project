@@ -9,13 +9,12 @@ import 'package:store/utility/String.dart';
 import 'package:store/utility/colors.dart';
 
 class Register extends StatelessWidget {
-  const Register({super.key});
+  Register({super.key});
 
+  TextEditingController email = TextEditingController();
+  TextEditingController pass = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    TextEditingController email = TextEditingController();
-    TextEditingController pass = TextEditingController();
-
     Register() async {
       try {
         FirebaseAuth.instance.createUserWithEmailAndPassword(

@@ -12,10 +12,11 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController email = TextEditingController();
+  TextEditingController pass = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    TextEditingController email = TextEditingController();
-    TextEditingController pass = TextEditingController();
+    String invalid = "";
     Loginfun() async {
       try {
         final Credential = await FirebaseAuth.instance
@@ -27,7 +28,7 @@ class _LoginState extends State<Login> {
             ));
       } on FirebaseAuthException catch (e) {
         if (e.code == 'wrong-password') {
-          print('Wrong Password.');
+          invalid = "*Invalid credintials";
         } else if (e.code == 'email-already-in-use') {
           print('The account already exists for that email.');
         }
@@ -105,20 +106,32 @@ class _LoginState extends State<Login> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 2, 5, 15),
                         child: Container(
-                          height: 50,
+                          height: 90,
                           width: MediaQuery.of(context).size.width * 0.9,
-                          child: TextField(
-                            controller: email,
-                            decoration: const InputDecoration(
-                              prefixIcon: Icon(Icons.person),
-                              label: Text("Email"),
-                              border: OutlineInputBorder(),
-                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextField(
+                                controller: email,
+                                decoration: const InputDecoration(
+                                  prefixIcon: Icon(Icons.person),
+                                  label: Text("Email"),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(5, 5, 0, 3),
+                                child: Text(
+                                  "${invalid}",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              )
+                            ],
                           ),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 5, 15),
+                        padding: const EdgeInsets.fromLTRB(20, 0, 5, 15),
                         child: Container(
                           height: 50,
                           width: MediaQuery.of(context).size.width * 0.9,

@@ -25,19 +25,20 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 5),
-          child: Container(
-            height: 10,
-            child: Image.asset("assets/Images/logo_3.png"),
-          ),
-        ),
+        // leading: Padding(
+        //   padding: const EdgeInsets.only(left: 5),
+        //   child: Container(
+        //     height: 10,
+        //     child: Image.asset("assets/Images/logo_3.png"),
+        //   ),
+        // ),
         title: Container(
           child: Image.asset("assets/Images/logo_text.png"),
         ),
-        actions: const [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+        // iconTheme: IconThemeData(color: Colors.blue),
+        actions: [
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Icon(
               Icons.notifications,
               color: Colors.black,
@@ -45,12 +46,22 @@ class Home extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.menu,
-              color: Colors.black,
+            child: InkWell(
+              onTap: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+              child: Icon(
+                Icons.menu,
+                color: Colors.black,
+              ),
             ),
           )
         ],
+      ),
+      endDrawer: Drawer(
+        child: Container(
+          color: Color(colorconst.primary_color),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -87,7 +98,7 @@ class Home extends StatelessWidget {
                         builder: (context) => Checkout(),
                       ));
                 },
-                child: const Icon(
+                child: Icon(
                   Icons.shopping_bag_outlined,
                   color: Colors.black,
                 ),
