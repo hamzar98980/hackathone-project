@@ -14,29 +14,36 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController email = TextEditingController();
   TextEditingController pass = TextEditingController();
+  String invalid = "";
+  Loginfun() async {
+    try {
+      final Credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email.text, password: pass.text);
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Home(),
+          ));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password') {
+        setState(() {
+          invalid = "*Invalid credintials";
+        });
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      setState(() {
+        invalid = "*Invalid credintials";
+      });
+
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    String invalid = "";
-    Loginfun() async {
-      try {
-        final Credential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email.text, password: pass.text);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Home(),
-            ));
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'wrong-password') {
-          invalid = "*Invalid credintials";
-        } else if (e.code == 'email-already-in-use') {
-          print('The account already exists for that email.');
-        }
-      } catch (e) {
-        print(e);
-      }
-    }
-
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(
@@ -112,6 +119,7 @@ class _LoginState extends State<Login> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TextField(
+                                autofocus: true,
                                 controller: email,
                                 decoration: const InputDecoration(
                                   prefixIcon: Icon(Icons.person),
@@ -123,7 +131,9 @@ class _LoginState extends State<Login> {
                                 padding: const EdgeInsets.fromLTRB(5, 5, 0, 3),
                                 child: Text(
                                   "${invalid}",
-                                  style: TextStyle(color: Colors.red),
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               )
                             ],

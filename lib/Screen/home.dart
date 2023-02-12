@@ -48,7 +48,7 @@ class Home extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
               onTap: () {
-                Scaffold.of(context).openEndDrawer();
+                Scaffold.of(context).openDrawer();
               },
               child: Icon(
                 Icons.menu,
@@ -58,7 +58,7 @@ class Home extends StatelessWidget {
           )
         ],
       ),
-      endDrawer: Drawer(
+      drawer: Drawer(
         child: Container(
           color: Color(colorconst.primary_color),
         ),
